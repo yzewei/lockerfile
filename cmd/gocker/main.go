@@ -4,6 +4,7 @@ import (
 	"flag"
 	"log"
 	"os"
+//	"context"
 
 	"github.com/moby/buildkit/client/llb"
 	"github.com/moby/buildkit/frontend/gateway/grpcclient"
@@ -21,7 +22,7 @@ func main() {
 	flag.BoolVar(&graph, "graph", false, "output a graph and exit")
 	flag.StringVar(&filename, "f", "Gockerfile.yaml", "the file to read from")
 	flag.Parse()
-
+	ctx := appcontext.Context()
 	if graph {
 		c, err := config.NewConfigFromFilename(filename)
 		if err != nil {
@@ -32,7 +33,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		dt, err := st.Marshal()
+		dt, err := st.Marshal(ctx, llb.LinuxLoong64)
 		if err != nil {
 			log.Fatal(err)
 		}

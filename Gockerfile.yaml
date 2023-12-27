@@ -1,4 +1,5 @@
-#syntax=po3rin/gocker
-repo: github.com/po3rin/gockerfile
+#syntax=yangzewei2023/gocker:test
+##syntax=po3rin/gocker
+repo: github.com/yzewei/lockerfile
 path: ./example/gin
 version: v0.0.1

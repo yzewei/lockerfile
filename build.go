@@ -44,7 +44,7 @@ func Build(ctx context.Context, c client.Client) (*client.Result, error) {
 		return nil, errors.Wrapf(err, "failed to convert gocker to llb")
 	}
 
-	def, err := st.Marshal()
+	def, err := st.Marshal(ctx, llb.LinuxLoong64)
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to marshal local source")
 	}
@@ -95,7 +95,7 @@ func GetGockerfileConfig(ctx context.Context, c client.Client) (*config.Config, 
 		llb.WithCustomName("[internal] "+name),
 	)
 
-	def, err := src.Marshal()
+	def, err := src.Marshal(ctx, llb.LinuxLoong64)
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to marshal local source")
 	}

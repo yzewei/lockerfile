@@ -1,4 +1,5 @@
-FROM golang:1.12 AS builder
+#FROM cr.loongnix.cn/library/golang:1.19-alpine AS builder
+FROM yangzewei2023/golang:1.21-alpine AS builder
 
 ENV GO111MODULE on
 WORKDIR /go/src/github.com/po3rin/gockerfile

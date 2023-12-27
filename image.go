@@ -61,12 +61,12 @@ func NewImageConfig() *Image {
 func emptyImage() *Image {
 	img := &Image{
 		Image: specs.Image{
-			Architecture: "amd64",
+			Architecture: "loong64",
 			OS:           "linux",
 		},
 	}
 	img.RootFS.Type = "layers"
 	img.Config.WorkingDir = "/"
-	img.Config.Env = []string{"PATH=" + system.DefaultPathEnv}
+	img.Config.Env = []string{"PATH=" + system.DefaultPathEnv("linux")}
 	return img
 }

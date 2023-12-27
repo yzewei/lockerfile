@@ -14,9 +14,9 @@ func Gocker2LLB(c *config.Config) (llb.State, *Image, error) {
 }
 
 func goBuildBase() llb.State {
-	goAlpine := llb.Image("docker.io/library/golang:1.12-alpine")
+	goAlpine := llb.Image("yangzewei2023/golang:1.21-alpine")
 	return goAlpine.
-		AddEnv("PATH", "/usr/local/go/bin:"+system.DefaultPathEnv).
+		AddEnv("PATH", "/usr/local/go/bin:"+system.DefaultPathEnv("linux")).
 		AddEnv("GO111MODULE", "on").
 		Run(llb.Shlex("apk add --no-cache git")).
 		Root()
@@ -34,7 +34,7 @@ func goRepo(s llb.State, repo, ref string, g ...llb.GitOption) func(ro ...llb.Ru
 func buildkit(c *config.Config) llb.State {
 	builder := goRepo(goBuildBase(), c.Repo, c.Ver)
 	built := builder(llb.Shlex("go build -o ./bin/server " + c.Path))
-	r := llb.Image("docker.io/library/alpine:latest").With(
+	r := llb.Image("yangzewei2023/alpine:v3.18-base").With(
 		copyAll(built, "/bin"),
 	)
 	return r
@@ -52,7 +52,7 @@ func copyFrom(src llb.State, srcPath, destPath string) llb.StateOption {
 }
 
 func copy(src llb.State, srcPath string, dest llb.State, destPath string) llb.State {
-	cpImage := llb.Image("docker.io/library/alpine:latest")
+	cpImage := llb.Image("yangzewei2023/alpine:v3.18-base")
 	cp := cpImage.Run(llb.Shlexf("cp -a /src%s /dest%s", srcPath, destPath))
 	cp.AddMount("/src", src)
 	return cp.AddMount("/dest", dest)
